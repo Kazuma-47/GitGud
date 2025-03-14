@@ -6,6 +6,7 @@ public class InputHandler : MonoBehaviour
     [SerializeField] public Controls inputActions;
     private PlayerMovement playerMovement;
     private AbilityManager abilityManager;
+    private CameraController cameraController;
     private bool isAiming;
 
     private void Start()
@@ -15,6 +16,7 @@ public class InputHandler : MonoBehaviour
         inputActions.Abilities.Enable();
         playerMovement = GetComponent<PlayerMovement>();
         abilityManager = GetComponent<AbilityManager>();
+        cameraController = GetComponent<CameraController>();
     }
 
     private void FixedUpdate()
@@ -34,6 +36,9 @@ public class InputHandler : MonoBehaviour
 
     private void Update()
     {
+        Vector2 mouseInput = inputActions.PlayerMovement.Look.ReadValue<Vector2>();
+        cameraController.Look(mouseInput);
+
         if (isAiming) 
             abilityManager.LocationIndicator();
     }
