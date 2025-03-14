@@ -980,6 +980,7 @@ GameObject:
   - component: {fileID: 1994528019}
   - component: {fileID: 1994528021}
   - component: {fileID: 1994528022}
+  - component: {fileID: 1994528023}
   m_Layer: 0
   m_Name: PLayer
   m_TagString: Untagged
@@ -1071,6 +1072,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxTeleportDistance: 10
   indicatorPrefab: {fileID: 8379007168757475651, guid: 7f0abb5242988f24b8f31e8d2b23f8d4, type: 3}
+--- !u!114 &1994528023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1994528016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7234f443d4c45554680e3a4e52d6249d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sensitivity: {x: 5, y: 5}
 --- !u!1 &2054611008
 GameObject:
   m_ObjectHideFlags: 0
