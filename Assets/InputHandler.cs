@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class InputHandler : MonoBehaviour
 {
@@ -7,8 +8,8 @@ public class InputHandler : MonoBehaviour
     private PlayerMovement playerMovement;
     private AbilityManager abilityManager;
     private CameraController cameraController;
-    private bool isAiming;
-
+    private bool teleportActive;
+    private bool phaseAcive;
     private void Start()
     {
         inputActions = new Controls();
@@ -25,12 +26,19 @@ public class InputHandler : MonoBehaviour
         playerMovement.MovePlayer(movementInput);
 
         inputActions.PlayerMovement.Jump.performed += (InputAction.CallbackContext context) => playerMovement.Jump();
-        inputActions.Abilities.Teleport.performed += (InputAction.CallbackContext context) => isAiming = true;
+        inputActions.Abilities.Teleport.performed += (InputAction.CallbackContext context) => teleportActive = true;
+        inputActions.Abilities.Dash.performed += (InputAction.CallbackContext context) => abilityManager.ActivateAbility(2);
+        inputActions.Abilities.Phase.performed += (InputAction.CallbackContext context) => phaseAcive = true;
 
+        inputActions.Abilities.Phase.canceled += (InputAction.CallbackContext context) =>
+        {
+            phaseAcive = false;
+            abilityManager.UseAbility(3);
+        };
         inputActions.Abilities.Teleport.canceled += (InputAction.CallbackContext context) =>
         {
-            isAiming = false;
-            abilityManager.Teleport();
+            teleportActive = false;
+            abilityManager.UseAbility(1);
         };
     }
 
@@ -39,7 +47,9 @@ public class InputHandler : MonoBehaviour
         Vector2 mouseInput = inputActions.PlayerMovement.Look.ReadValue<Vector2>();
         cameraController.Look(mouseInput);
 
-        if (isAiming) 
-            abilityManager.LocationIndicator();
+        if (teleportActive) 
+            abilityManager.ActivateAbility(1);
+        if (phaseAcive)
+            abilityManager.ActivateAbility(3);
     }
 }

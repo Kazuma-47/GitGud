@@ -16,10 +16,10 @@ public class PlayerMovement : MonoBehaviour
 
     void Start() => characterController = GetComponent<CharacterController>();
 
-    // Update is called once per frame
     void Update()
     {
         isGrounded = characterController.isGrounded;
+        print(isGrounded);
 
         velocity.y += gravity * Time.deltaTime;
         characterController.Move(velocity * Time.deltaTime);
@@ -30,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 move = transform.right * direction.x + transform.forward * direction.y;
         characterController.Move(move * (isWalking ? walkingSpeed : runningSpeed) * Time.deltaTime);
     }
+
     public void Jump()
     {
         velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);

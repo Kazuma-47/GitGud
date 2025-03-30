@@ -147,6 +147,24 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""360f6733-523c-491e-96f1-1a3080136cb4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Phase"",
+                    ""type"": ""Button"",
+                    ""id"": ""5c24ebe8-2662-4321-96b8-ec4e37b3cb20"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -158,6 +176,28 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Teleport"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""51e7cda9-3fca-401f-8e5d-4f67aa9deda3"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""106c62d3-11e3-4b77-99a3-798d6d915e01"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Phase"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -174,6 +214,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         // Abilities
         m_Abilities = asset.FindActionMap("Abilities", throwIfNotFound: true);
         m_Abilities_Teleport = m_Abilities.FindAction("Teleport", throwIfNotFound: true);
+        m_Abilities_Dash = m_Abilities.FindAction("Dash", throwIfNotFound: true);
+        m_Abilities_Phase = m_Abilities.FindAction("Phase", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -298,11 +340,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Abilities;
     private List<IAbilitiesActions> m_AbilitiesActionsCallbackInterfaces = new List<IAbilitiesActions>();
     private readonly InputAction m_Abilities_Teleport;
+    private readonly InputAction m_Abilities_Dash;
+    private readonly InputAction m_Abilities_Phase;
     public struct AbilitiesActions
     {
         private @Controls m_Wrapper;
         public AbilitiesActions(@Controls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Teleport => m_Wrapper.m_Abilities_Teleport;
+        public InputAction @Dash => m_Wrapper.m_Abilities_Dash;
+        public InputAction @Phase => m_Wrapper.m_Abilities_Phase;
         public InputActionMap Get() { return m_Wrapper.m_Abilities; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -315,6 +361,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Teleport.started += instance.OnTeleport;
             @Teleport.performed += instance.OnTeleport;
             @Teleport.canceled += instance.OnTeleport;
+            @Dash.started += instance.OnDash;
+            @Dash.performed += instance.OnDash;
+            @Dash.canceled += instance.OnDash;
+            @Phase.started += instance.OnPhase;
+            @Phase.performed += instance.OnPhase;
+            @Phase.canceled += instance.OnPhase;
         }
 
         private void UnregisterCallbacks(IAbilitiesActions instance)
@@ -322,6 +374,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Teleport.started -= instance.OnTeleport;
             @Teleport.performed -= instance.OnTeleport;
             @Teleport.canceled -= instance.OnTeleport;
+            @Dash.started -= instance.OnDash;
+            @Dash.performed -= instance.OnDash;
+            @Dash.canceled -= instance.OnDash;
+            @Phase.started -= instance.OnPhase;
+            @Phase.performed -= instance.OnPhase;
+            @Phase.canceled -= instance.OnPhase;
         }
 
         public void RemoveCallbacks(IAbilitiesActions instance)
@@ -348,5 +406,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     public interface IAbilitiesActions
     {
         void OnTeleport(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
+        void OnPhase(InputAction.CallbackContext context);
     }
 }

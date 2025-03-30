@@ -2,55 +2,48 @@ using UnityEngine;
 
 public class AbilityManager : MonoBehaviour
 {
-    [SerializeField] private float maxTeleportDistance;
-    [SerializeField] private GameObject indicatorPrefab;
-    private CharacterController characterController;
-    private GameObject indicator;
-    private Vector3 ?position;
-    private bool isAiming;
-
-    private void Start() => characterController = GetComponent<CharacterController>();
-    
-
-    public void LocationIndicator()
+    private Ability blinkAbility;
+    private Ability DashAbility;
+    private Ability PhaseAbility;
+    private void Start()
     {
-        RaycastHit hit;
-        Transform origin = Camera.main.transform;
-        if (Physics.Raycast(origin.position, origin.TransformDirection(Vector3.forward), out hit, maxTeleportDistance))
+        blinkAbility = GetComponent<BlinkAbility>();
+        DashAbility = GetComponent<DashAbility>();
+        PhaseAbility = GetComponent<phaseAbility>();
+    }
+
+    public void ActivateAbility(int input)
+    {
+        if(input == 1)
         {
-            if (indicator == null)
-            {
-                indicator = Instantiate(indicatorPrefab, hit.point, Quaternion.FromToRotation(Vector3.up, -hit.normal), transform);
-            }
-            UpdateIndicator(hit);
+            blinkAbility.OnActivate();
         }
-        else
+        else if (input == 2)
         {
-            if (indicator != null)
-            {
-                indicator.SetActive(false);
-                position = null;
-            }
-               
+            print("ability 2");
+            DashAbility.OnActivate();
+        }
+        else if(input == 3)
+        {
+            print("abilit 3");
+            PhaseAbility.OnActivate();
         }
     }
 
-    public void Teleport()
+    public void UseAbility(int input)
     {
-        if (!position.HasValue)
-            return;
-        
-        indicator.SetActive(false);
-        characterController.enabled = false;
-        characterController.transform.position = position.Value;
-        characterController.enabled = true;
+        if (input == 1)
+        {
+            blinkAbility.UseAbility();
+        }
+        else if(input == 2)
+        {
+            DashAbility.UseAbility();
+        }
+        else if (input == 3)
+        {
+            PhaseAbility.UseAbility();
+        }
     }
-
-    public void UpdateIndicator(RaycastHit hit)
-    {
-        indicator.SetActive(true);
-        indicator.transform.position = hit.point;
-        indicator.transform.rotation = Quaternion.FromToRotation(Vector3.up, -hit.normal);
-        position = hit.point;
-    }
+   
 }
